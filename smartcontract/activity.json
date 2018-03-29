@@ -1,0 +1,27 @@
+{
+  "name": "tibco-log",
+  "type": "flogo:activity",
+  "ref": "github.com/TIBCOSoftware/flogo-contrib/activity/smartcontract",
+  "version": "0.0.1",
+  "title": "smart contract state",
+  "description": "create/update states on the ledger, assetName is the fully qualified name <namespace>.<assetname>, assetValue is json object, result is the state json object",
+  "homepage": "https://github.com/TIBCOSoftware/flogo-contrib/tree/master/activity/smartcontract",
+  "input":[
+    {
+      "name": "assetName",
+      "type": "string",
+      "value": ""
+    },
+    {
+      "name": "assetValue",
+      "type": "object",
+      "value": "true"
+    }
+  ],
+  "output": [
+    {
+      "name": "result",
+      "type": "object"
+    }
+  ]
+}
