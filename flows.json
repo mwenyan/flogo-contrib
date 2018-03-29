@@ -1,0 +1,783 @@
+{
+  "name": "IOU Smart Contract",
+  "type": "flogo:actions",
+  "version": "0.0.1",
+  "description": "IOU",
+  "properties": {
+  },
+  "actions": [
+    {
+      "data": {
+        "flow": {
+          "name": "issue IOU",
+          "type": 1,
+          "attributes": [],
+          "rootTask": {
+            "id": "root",
+            "type": 1,
+            "tasks": [
+              {
+                "id": "start_1",
+                "name": "start",
+                "description": "process starter",
+                "type": 1,
+                "activityType": "github-mwenyan-flogo-contrib-activity-start",
+                "activityRef": "github.com/mwenyan/flogo-contrib/activity/start",
+                "attributes": []
+              },
+              {
+                "id": "createState_1",
+                "name": "createIOU",
+                "description": "create an IOU",
+                "type": 1,
+                "activityType": "github-mwenyan-flogo-contrib-activity-smartcontract",
+                "activityRef": "github.com/mwenyan/flogo-contrib/activity/smartcontract",
+                "attributes": [
+                  {
+                    "name": "assetName",
+                    "value": "com.tibco.cp.IOU",
+                    "required": true,
+                    "type": "string"
+                  },
+                  {
+                    "name": "assetValue",
+                    "value": "",
+                    "required": true,
+                    "type": "object"
+                  }
+                ],
+                "inputMappings": [
+                  {
+                    "type": 2,
+                    "value": "com.tibco.cp.IOU",
+                    "mapTo": "assetName"
+                  },
+                  {
+                    "type": 1,
+                    "value": "$flow.iou",
+                    "mapTo": "assetValue"
+                  }
+                ]
+              },
+              {
+                "id": "error_4",
+                "name": "Throw Error",
+                "description": "Simple Error Activity",
+                "type": 1,
+                "activityType": "github-com-tibco-software-flogo-contrib-activity-error",
+                "activityRef": "github.com/TIBCOSoftware/flogo-contrib/activity/error",
+                "attributes": [
+                  {
+                    "name": "message",
+                    "value": null,
+                    "required": false,
+                    "type": "string"
+                  },
+                  {
+                    "name": "data",
+                    "value": null,
+                    "required": false,
+                    "type": "object"
+                  }
+                ],
+                "inputMappings": [
+                  {
+                    "type": 2,
+                    "value": "IOU amount must be greater than 0",
+                    "mapTo": "message"
+                  }
+                ]
+              },
+              {
+                "id": "actreturn_3",
+                "name": "Return",
+                "description": "Simple Return Activity",
+                "type": 1,
+                "activityType": "flogo-return",
+                "activityRef": "github.com/TIBCOSoftware/flogo-contrib/activity/actreturn",
+                "attributes": [
+                  {
+                    "name": "mappings",
+                    "value": [],
+                    "required": true,
+                    "type": "array"
+                  }
+                ]
+              }
+            ],
+            "links": [
+              {
+                "id": 1,
+                "from": "start_1",
+                "to": "createState_1",
+                "type": 1,
+                "value": "$flow.iou.amt.quantity>0"
+              },
+              {
+                "id": 2,
+                "from": "createState_1",
+                "to": "actreturn_3",
+                "type": 0
+              },
+              {
+                "id": 3,
+                "from": "start_1",
+                "to": "error_4",
+                "type": 1,
+                "value": "$flow.iou.amt.quantity<=0"
+              }
+            ],
+            "attributes": []
+          },
+          "explicitReply": true
+        }
+      },
+      "id": "issue_IOU",
+      "description": "",
+      "metadata": {
+        "isTransaction": true,
+        "transaction": "com.tibco.cp.IssueIOU",
+        "input": [
+          {
+            "name": "iou",
+            "type": "object"
+          }
+        ],
+        "output": []
+      },
+      "ref": "github.com/TIBCOSoftware/flogo-contrib/action/flow"
+    },
+    {
+      "data": {
+        "flow": {
+          "name": "transfer IOU",
+          "type": 1,
+          "attributes": [],
+          "rootTask": {
+            "id": "root",
+            "type": 1,
+            "tasks": [
+              {
+                "id": "start_1",
+                "name": "start",
+                "description": "process starter",
+                "type": 1,
+                "activityType": "github-mwenyan-flogo-contrib-activity-start",
+                "activityRef": "github.com/mwenyan/flogo-contrib/activity/start",
+                "attributes": []
+              },
+              {
+                "id": "createState_1",
+                "name": "createIOU",
+                "description": "create an IOU",
+                "type": 1,
+                "activityType": "github-mwenyan-flogo-contrib-activity-smartcontract",
+                "activityRef": "github.com/mwenyan/flogo-contrib/activity/smartcontract",
+                "attributes": [
+                  {
+                    "name": "assetName",
+                    "value": "com.tibco.cp.IOU",
+                    "required": true,
+                    "type": "string"
+                  },
+                  {
+                    "name": "assetValue",
+                    "value": "",
+                    "required": true,
+                    "type": "object"
+                  }
+                ],
+                "inputMappings": [
+                  {
+                    "type": 2,
+                    "value": "com.tibco.cp.IOU",
+                    "mapTo": "assetName"
+                  },
+                  {
+                    "type": 4,
+                    "value": {
+                        "lender": "{{$flow.newLender}}",
+                        "borrower": "{{$flow.iou.borrower}}",
+                        "amt": "{{$flow.iou.amt}}",
+                        "paid": "{{$flow.iou.paid}}"
+                    },
+                    "mapTo": "assetValue"
+                  }
+                ]
+              },
+              {
+                "id": "error_4",
+                "name": "Throw Error",
+                "description": "Simple Error Activity",
+                "type": 1,
+                "activityType": "github-com-tibco-software-flogo-contrib-activity-error",
+                "activityRef": "github.com/TIBCOSoftware/flogo-contrib/activity/error",
+                "attributes": [
+                  {
+                    "name": "message",
+                    "value": null,
+                    "required": false,
+                    "type": "string"
+                  },
+                  {
+                    "name": "data",
+                    "value": null,
+                    "required": false,
+                    "type": "object"
+                  }
+                ],
+                "inputMappings": [
+                  {
+                    "type": 2,
+                    "value": "new lender can't be the same as current lender",
+                    "mapTo": "message"
+                  }
+                ]
+              },
+              {
+                "id": "actreturn_3",
+                "name": "Return",
+                "description": "Simple Return Activity",
+                "type": 1,
+                "activityType": "flogo-return",
+                "activityRef": "github.com/TIBCOSoftware/flogo-contrib/activity/actreturn",
+                "attributes": [
+                  {
+                    "name": "mappings",
+                    "value": [],
+                    "required": true,
+                    "type": "array"
+                  }
+                ]
+              }
+            ],
+            "links": [
+              {
+                "id": 1,
+                "from": "start_1",
+                "to": "createState_1",
+                "type": 1,
+                "value": "$flow.iou.lender != $flow.newLender"
+              },
+              {
+                "id": 2,
+                "from": "createState_1",
+                "to": "actreturn_3",
+                "type": 0
+              },
+              {
+                "id": 3,
+                "from": "start_1",
+                "to": "error_4",
+                "type": 1,
+                "value": "$flow.iou.lender == $flow.newLender"
+              }
+            ],
+            "attributes": []
+          },
+          "explicitReply": true
+        }
+      },
+      "id": "transfer_IOU",
+      "description": "",
+      "metadata": {
+        "isTransaction": true,
+        "transaction": "com.tibco.cp.TransferIOU",
+        "input": [
+          {
+            "name": "iou",
+            "type": "object"
+          },
+          {
+            "name": "newLender",
+            "type": "object"
+          }
+        ],
+        "output": []
+      },
+      "ref": "github.com/TIBCOSoftware/flogo-contrib/action/flow"
+    },
+    {
+      "data": {
+        "flow": {
+          "name": "settle IOU",
+          "type": 1,
+          "attributes": [],
+          "rootTask": {
+            "id": "root",
+            "type": 1,
+            "tasks": [
+              {
+                "id": "start_1",
+                "name": "start",
+                "description": "process starter",
+                "type": 1,
+                "activityType": "github-mwenyan-flogo-contrib-activity-start",
+                "activityRef": "github.com/mwenyan/flogo-contrib/activity/start",
+                "attributes": []
+              },
+              {
+                "id": "balance",
+                "name": "balance",
+                "description": "calculate remaining balance",
+                "type": 1,
+                "activityType": "github-mwenyan-flogo-contrib-activity-flowvariable",
+                "activityRef": "github.com/mwenyan/flogo-contrib/activity/flowvariable",
+                "attributes": [
+                  {
+                    "name": "name",
+                    "value": "balance",
+                    "required": true,
+                    "type": "string"
+                  },
+                  {
+                    "name": "type",
+                    "value": "integer",
+                    "required": true,
+                    "type": "string",
+                    "allowed": ["string","boolean", "integer", "long", "double"]
+                  },
+                  {
+                    "name": "value",
+                    "value": "",
+                    "required": true,
+                    "type": "object"
+                  }
+                ],
+                "inputMappings": [
+                  {
+                    "type": 3,
+                    "value": "$flow.iou.amt.quantity - $flow.iou.paid.quantity",
+                    "mapTo": "value"
+                  }
+                ]
+              },
+              {
+                "id": "ttlPayment",
+                "name": "ttlPayment",
+                "description": "calculate total payment",
+                "type": 1,
+                "activityType": "github-mwenyan-flogo-contrib-activity-flowvariable",
+                "activityRef": "github.com/mwenyan/flogo-contrib/activity/flowvariable",
+                "attributes": [
+                  {
+                    "name": "name",
+                    "value": "ttlPayment",
+                    "required": true,
+                    "type": "string"
+                  },
+                  {
+                    "name": "type",
+                    "value": "integer",
+                    "required": true,
+                    "type": "string",
+                    "allowed": ["string","boolean", "integer", "long", "double"]
+                  },
+                  {
+                    "name": "value",
+                    "value": "",
+                    "required": true,
+                    "type": "object"
+                  }
+                ],
+                "inputMappings": [
+                  {
+                    "type": 3,
+                    "value": "array.sumInt($flow.payments.amt.quantity)",
+                    "mapTo": "value"
+                  }
+                ]
+              },
+              {
+                "id": "ttlPaid",
+                "name": "ttlPaid",
+                "description": "calculate total paid amt",
+                "type": 1,
+                "activityType": "github-mwenyan-flogo-contrib-activity-flowvariable",
+                "activityRef": "github.com/mwenyan/flogo-contrib/activity/flowvariable",
+                "attributes": [
+                  {
+                    "name": "name",
+                    "value": "ttlPaid",
+                    "required": true,
+                    "type": "string"
+                  },
+                  {
+                    "name": "type",
+                    "value": "integer",
+                    "required": true,
+                    "type": "string",
+                    "allowed": ["string","boolean", "integer", "long", "double"]
+                  },
+                  {
+                    "name": "value",
+                    "value": "",
+                    "required": true,
+                    "type": "object"
+                  }
+                ],
+                "inputMappings": [
+                  {
+                    "type": 3,
+                    "value": "$var.ttlPayment + $flow.iou.paid.quantity",
+                    "mapTo": "value"
+                  }
+                ]
+              },
+              {
+                "id": "change",
+                "name": "change",
+                "description": "calculate change",
+                "type": 1,
+                "activityType": "github-mwenyan-flogo-contrib-activity-flowvariable",
+                "activityRef": "github.com/mwenyan/flogo-contrib/activity/flowvariable",
+                "attributes": [
+                  {
+                    "name": "name",
+                    "value": "change",
+                    "required": true,
+                    "type": "string"
+                  },
+                  {
+                    "name": "type",
+                    "value": "integer",
+                    "required": true,
+                    "type": "string",
+                    "allowed": ["string","boolean", "integer", "long", "double"]
+                  },
+                  {
+                    "name": "value",
+                    "value": "",
+                    "required": true,
+                    "type": "object"
+                  }
+                ],
+                "inputMappings": [
+                  {
+                    "type": 3,
+                    "value": "$var.ttlPayment - $var.balance",
+                    "mapTo": "value"
+                  }
+                ]
+              },
+              {
+                "id": "iou1",
+                "name": "createIOU",
+                "description": "update paid amt",
+                "type": 1,
+                "activityType": "github-mwenyan-flogo-contrib-activity-smartcontract",
+                "activityRef": "github.com/mwenyan/flogo-contrib/activity/smartcontract",
+                "attributes": [
+                  {
+                    "name": "assetName",
+                    "value": "com.tibco.cp.IOU",
+                    "required": true,
+                    "type": "string"
+                  },
+                  {
+                    "name": "assetValue",
+                    "value": "",
+                    "required": true,
+                    "type": "object"
+                  }
+                ],
+                "inputMappings": [
+                  {
+                    "type": 2,
+                    "value": "com.tibco.cp.IOU",
+                    "mapTo": "assetName"
+                  },
+                  {
+                    "type": 4,
+                    "value": {
+                        "lender": "{{$flow.iou.lender}}",
+                        "borrower": "{{$flow.iou.borrower}}",
+                        "amt": "{{$flow.iou.amt}}",
+                        "paid": {
+                            "currency": "{{$flow.iou.amt.currency}}",
+                            "quantity": "{{$var.ttlPaid}}"
+                        }
+                    },
+                    "mapTo": "assetValue"
+                  }
+                ]
+              },
+              {
+                "id": "iou2",
+                "name": "createIOU",
+                "description": "fully paid iou",
+                "type": 1,
+                "activityType": "github-mwenyan-flogo-contrib-activity-smartcontract",
+                "activityRef": "github.com/mwenyan/flogo-contrib/activity/smartcontract",
+                "attributes": [
+                  {
+                    "name": "assetName",
+                    "value": "com.tibco.cp.IOU",
+                    "required": true,
+                    "type": "string"
+                  },
+                  {
+                    "name": "assetValue",
+                    "value": "",
+                    "required": true,
+                    "type": "object"
+                  }
+                ],
+                "inputMappings": [
+                  {
+                    "type": 2,
+                    "value": "com.tibco.cp.IOU",
+                    "mapTo": "assetName"
+                  },
+                  {
+                    "type": 4,
+                    "value": {
+                        "lender": "{{$flow.iou.lender}}",
+                        "borrower": "{{$flow.iou.borrower}}",
+                        "amt": "{{$flow.iou.amt}}",
+                        "paid": "{{$flow.iou.amt}}"
+                    },
+                    "mapTo": "assetValue"
+                  }
+                ]
+              },
+              {
+                "id": "cash1",
+                "name": "createCash",
+                "description": "cash owner should be lender",
+                "type": 1,
+                "activityType": "github-mwenyan-flogo-contrib-activity-smartcontract",
+                "activityRef": "github.com/mwenyan/flogo-contrib/activity/smartcontract",
+                "attributes": [
+                  {
+                    "name": "assetName",
+                    "value": "com.tibco.honeycomb.system.Cash",
+                    "required": true,
+                    "type": "string"
+                  },
+                  {
+                    "name": "assetValue",
+                    "value": "",
+                    "required": true,
+                    "type": "object"
+                  }
+                ],
+                "inputMappings": [
+                  {
+                    "type": 2,
+                    "value": "com.tibco.honeycomb.system.Cash",
+                    "mapTo": "assetName"
+                  },
+                  {
+                    "type": 4,
+                    "value": {
+                        "amt": {
+                          "quantity": "{{$var.ttlPayment}}",
+                          "currency": "{{$flow.iou.amt.currency}}"
+                        },
+                        "owner": "{{$flow.iou.lender}}"
+                    },
+                    "mapTo": "assetValue"
+                  }
+                ]
+              },
+              {
+                "id": "cash2",
+                "name": "createCash",
+                "description": "fully paid",
+                "type": 1,
+                "activityType": "github-mwenyan-flogo-contrib-activity-smartcontract",
+                "activityRef": "github.com/mwenyan/flogo-contrib/activity/smartcontract",
+                "attributes": [
+                  {
+                    "name": "assetName",
+                    "value": "com.tibco.honeycomb.system.Cash",
+                    "required": true,
+                    "type": "string"
+                  },
+                  {
+                    "name": "assetValue",
+                    "value": "",
+                    "required": true,
+                    "type": "object"
+                  }
+                ],
+                "inputMappings": [
+                  {
+                    "type": 2,
+                    "value": "com.tibco.honeycomb.system.Cash",
+                    "mapTo": "assetName"
+                  },
+                  {
+                    "type": 4,
+                    "value": {
+                        "amt": {
+                          "quantity": "{{$var.balance}}",
+                          "currency": "{{$flow.iou.amt.currency}}"
+                        },
+                        "owner": "{{$flow.iou.lender}}"
+                    },
+                    "mapTo": "assetValue"
+                  }
+                ]
+              },
+              {
+                "id": "cash3",
+                "name": "createCash",
+                "description": "send change back to owner",
+                "type": 1,
+                "activityType": "github-mwenyan-flogo-contrib-activity-smartcontract",
+                "activityRef": "github.com/mwenyan/flogo-contrib/activity/smartcontract",
+                "attributes": [
+                  {
+                    "name": "assetName",
+                    "value": "com.tibco.honeycomb.system.Cash",
+                    "required": true,
+                    "type": "string"
+                  },
+                  {
+                    "name": "assetValue",
+                    "value": "",
+                    "required": true,
+                    "type": "object"
+                  }
+                ],
+                "inputMappings": [
+                  {
+                    "type": 2,
+                    "value": "com.tibco.honeycomb.system.Cash",
+                    "mapTo": "assetName"
+                  },
+                  {
+                    "type": 4,
+                    "value": {
+                        "amt": {
+                          "quantity": "{{$var.change}}",
+                          "currency": "{{$flow.iou.amt.currency}}"
+                        },
+                        "owner": "{{$flow.iou.borrower}}"
+                    },
+                    "mapTo": "assetValue"
+                  }
+                ]
+              },
+              {
+                "id": "error_4",
+                "name": "Throw Error",
+                "description": "Simple Error Activity",
+                "type": 1,
+                "activityType": "github-com-tibco-software-flogo-contrib-activity-error",
+                "activityRef": "github.com/TIBCOSoftware/flogo-contrib/activity/error",
+                "attributes": [
+                  {
+                    "name": "message",
+                    "value": null,
+                    "required": false,
+                    "type": "string"
+                  },
+                  {
+                    "name": "data",
+                    "value": null,
+                    "required": false,
+                    "type": "object"
+                  }
+                ],
+                "inputMappings": [
+                  {
+                    "type": 2,
+                    "value": "IOU remaining balance is 0",
+                    "mapTo": "message"
+                  }
+                ]
+              }
+            ],
+            "links": [
+              {
+                "id": 1,
+                "from": "start_1",
+                "to": "balance",
+                "type": 0
+              },
+              {
+                "id": 2,
+                "from": "balance",
+                "to": "ttlPayment",
+                "type": 1,
+                "value": "$var.balance > 0"
+              },
+              {
+                "id": 3,
+                "from": "ttlPayment",
+                "to": "ttlPaid",
+                "type": 1,
+                "value": "$var.ttlPayment <= $var.balance"
+              },
+              {
+                "id": 4,
+                "from": "ttlPaid",
+                "to": "iou1",
+                "type": 0
+              },
+              {
+                "id": 5,
+                "from": "iou1",
+                "to": "cash1",
+                "type": 0
+              },
+              {
+                "id": 6,
+                "from": "ttlPayment",
+                "to": "change",
+                "type": 1,
+                "value": "$var.ttlPayment > $var.balance"
+              },
+              {
+                "id": 7,
+                "from": "change",
+                "to": "cash2",
+                "type": 0
+              },
+              {
+                "id": 8,
+                "from": "cash2",
+                "to": "cash3",
+                "type": 0
+              },
+              {
+                "id": 9,
+                "from": "cash3",
+                "to": "iou2",
+                "type": 0
+              },
+              {
+                "id": 10,
+                "from": "balance",
+                "to": "error_4",
+                "type": 1,
+                "value": "$var.balance == 0"
+              }
+            ],
+            "attributes": []
+          },
+          "explicitReply": true
+        }
+      },
+      "id": "settle_IOU",
+      "description": "",
+      "metadata": {
+        "input": [
+          {
+            "name": "iou",
+            "type": "object"
+          },
+          {
+            "name": "payments",
+            "type": "array"
+          }
+        ],
+        "output": []
+      },
+      "ref": "github.com/TIBCOSoftware/flogo-contrib/action/flow"
+    }
+  ]
+}
