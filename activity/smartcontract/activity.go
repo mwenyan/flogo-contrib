@@ -1,9 +1,6 @@
 package smartcontract
 
 import (
-	"fmt"
-	"strconv"
-
 	"github.com/TIBCOSoftware/flogo-lib/core/activity"
 	"github.com/TIBCOSoftware/flogo-lib/logger"
 )
@@ -24,7 +21,7 @@ func init() {
 
 // create or update state
 // inputs : {assetName, assetValue}
-// outputs: asset
+// outputs: output
 type SmartContractActivity struct {
 	metadata *activity.Metadata
 }
@@ -42,7 +39,6 @@ func (a *SmartContractActivity) Metadata() *activity.Metadata {
 // Eval implements api.Activity.Eval - Logs the Message
 func (a *SmartContractActivity) Eval(context activity.Context) (done bool, err error) {
 
-	assetName, _ := context.GetInput(ivAssetName).(string)
 
 	assetValue, _ := context.GetInput(ivAssetValue).(interface{})
 
