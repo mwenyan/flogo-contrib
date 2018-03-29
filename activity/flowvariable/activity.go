@@ -1,9 +1,6 @@
 package flowvariable
 
 import (
-	"fmt"
-	"strconv"
-
 	"github.com/TIBCOSoftware/flogo-lib/core/activity"
 	"github.com/TIBCOSoftware/flogo-lib/logger"
 )
@@ -21,25 +18,24 @@ func init() {
 	activityLog.SetLogLevel(logger.InfoLevel)
 }
 
-// create or update state
-// inputs : {assetName, assetValue}
-// outputs: asset
-type SmartContractActivity struct {
+// define variables
+// inputs : {name, type, value}
+type FlowVariableActivity struct {
 	metadata *activity.Metadata
 }
 
 // NewActivity creates a new AppActivity
 func NewActivity(metadata *activity.Metadata) activity.Activity {
-	return &SmartContractActivity{metadata: metadata}
+	return &FlowVariableActivity{metadata: metadata}
 }
 
 // Metadata returns the activity's metadata
-func (a *SmartContractActivity) Metadata() *activity.Metadata {
+func (a *FlowVariableActivity) Metadata() *activity.Metadata {
 	return a.metadata
 }
 
 // Eval implements api.Activity.Eval - Logs the Message
-func (a *SmartContractActivity) Eval(context activity.Context) (done bool, err error) {
+func (a *FlowVariableActivity) Eval(context activity.Context) (done bool, err error) {
 
 	name, _ := context.GetInput(ivName).(string)
 	_type, _ := context.GetInput(ivType).(string)

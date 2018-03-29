@@ -1,11 +1,11 @@
 {
   "name": "tibco-flowvariable",
   "type": "flogo:activity",
-  "ref": "github.com/TIBCOSoftware/flogo-contrib/activity/flowvariable",
+  "ref": "github.com/mwenyan/flogo-contrib/activity/flowvariable",
   "version": "0.0.1",
   "title": "define variable to use in flow mappings",
   "description": "define a variable to use later in the flow, $var.<variableName>",
-  "homepage": "https://github.com/TIBCOSoftware/flogo-contrib/tree/master/activity/smartcontract",
+  "homepage": "https://github.com/mwenyan/flogo-contrib/tree/master/activity/smartcontract",
   "input":[
     {
       "name": "name",
