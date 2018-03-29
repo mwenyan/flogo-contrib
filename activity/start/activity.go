@@ -22,16 +22,16 @@ type StartActivity struct {
 
 // NewActivity creates a new AppActivity
 func NewActivity(metadata *activity.Metadata) activity.Activity {
-	return &SmartContractActivity{metadata: metadata}
+	return &StartActivity{metadata: metadata}
 }
 
 // Metadata returns the activity's metadata
-func (a *SmartContractActivity) Metadata() *activity.Metadata {
+func (a *StartActivity) Metadata() *activity.Metadata {
 	return a.metadata
 }
 
 // Eval implements api.Activity.Eval - Logs the Message
-func (a *SmartContractActivity) Eval(context activity.Context) (done bool, err error) {
+func (a *StartActivity) Eval(context activity.Context) (done bool, err error) {
 
 	return true, nil
 }
