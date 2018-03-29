@@ -1,7 +1,7 @@
 {
   "name": "tibco-start",
   "type": "flogo:activity",
-  "ref": "github.com/TIBCOSoftware/flogo-contrib/activity/start",
+  "ref": "github.com/mwenyan/flogo-contrib/start",
   "version": "0.0.1",
   "title": "flow start",
   "description": "a place holder for flow start",
