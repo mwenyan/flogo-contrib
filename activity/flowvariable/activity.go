@@ -37,9 +37,5 @@ func (a *FlowVariableActivity) Metadata() *activity.Metadata {
 // Eval implements api.Activity.Eval - Logs the Message
 func (a *FlowVariableActivity) Eval(context activity.Context) (done bool, err error) {
 
-	name, _ := context.GetInput(ivName).(string)
-	_type, _ := context.GetInput(ivType).(string)
-	value, _ := context.GetInput(ivValue).(string)
-
 	return true, nil
 }
