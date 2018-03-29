@@ -1,5 +1,5 @@
 {
-  "name": "tibco-log",
+  "name": "tibco-start",
   "type": "flogo:activity",
   "ref": "github.com/TIBCOSoftware/flogo-contrib/activity/start",
   "version": "0.0.1",

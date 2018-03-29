@@ -1,5 +1,5 @@
 {
-  "name": "tibco-log",
+  "name": "tibco-flowvariable",
   "type": "flogo:activity",
   "ref": "github.com/TIBCOSoftware/flogo-contrib/activity/flowvariable",
   "version": "0.0.1",
